@@ -143,17 +143,11 @@ fn main() -> Result<(), &'static str> {
         .map(|line| line.unwrap())
         .collect();
 
-    let parsed_commands: Result<Vec<Command>, _> = program_lines
+    let parsed_commands: Vec<Command> = program_lines
         .iter()
         .enumerate()
-        .map(|(i, line)| Command::from_str(line).map_err(|e| format!("{} on line {}",e, i)))
+        .map(|(i, line)| Command::from_str(line).expect(&format!("parse error on line {}", i + 1)))
         .collect();
-
-    if let Err(e) = parsed_commands {
-        println!("{}", e);
-        return Ok(());
-    }
-    let commands = parsed_commands.unwrap();
 
     let inputs: Vec<u32> = args[2..]
         .iter()
@@ -167,7 +161,7 @@ fn main() -> Result<(), &'static str> {
         variables.insert(var, *input);
     }
 
-    for command in &commands {
+    for command in &parsed_commands {
         if let Some(var) = &command.variable {
             variables.entry(var.to_string()).or_insert(0);
         }
@@ -175,7 +169,7 @@ fn main() -> Result<(), &'static str> {
 
     let mut program_counter = 0;
     loop {
-        if program_counter >= commands.len() {
+        if program_counter >= parsed_commands.len() {
             println!("{}", variables["Y"]);
             return Ok(());
         }
@@ -184,7 +178,7 @@ fn main() -> Result<(), &'static str> {
             cmd_type,
             variable,
             dest_label,
-        } = &commands[program_counter];
+        } = &parsed_commands[program_counter];
         match (label, cmd_type.as_str(), variable, dest_label) {
             (_, "inc", Some(v), _) => {
                 *variables.get_mut(&v.to_string()).unwrap() += 1;
@@ -203,14 +197,14 @@ fn main() -> Result<(), &'static str> {
                 if variables[v] != 0 {
                     let mut i = 0;
                     loop {
-                        if i == commands.len() - 1 {
+                        if i == parsed_commands.len() - 1 {
                             println!("{}", variables["Y"]);
                             return Ok(());
                         }
-                        if program_counter >= commands.len() {
+                        if program_counter >= parsed_commands.len() {
                             program_counter = 0;
                         }
-                        if let Some(l) = &commands[program_counter].label {
+                        if let Some(l) = &parsed_commands[program_counter].label {
                             if l == d {
                                 break;
                             }
