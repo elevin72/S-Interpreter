@@ -16,3 +16,4 @@ Labels are any letter except for variables, followed by a number.
 Label `E` is by convention reserved for exiting the program.
 
 Build with `cargo build`
+Run by with `cargo run <source file> [params...]`
