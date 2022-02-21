@@ -11,9 +11,12 @@ See `add.s` for an example program. The syntax is like brainfxck in assembly.
 
 `X` or `Z` with no number is equivalent to `X1` or `Z1`
 
-Labels are any letter except for variables, followed by a number.
+Labels are any capital letter except for variables, followed by a number.
+
+Add a label to a line with something like `[A1]:`
 
 Label `E` is by convention reserved for exiting the program.
+
 
 Build with `cargo build`
 

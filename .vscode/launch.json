@@ -1,0 +1,45 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 's-interpreter'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=s-interpreter",
+                    "--package=s-interpreter"
+                ],
+                "filter": {
+                    "name": "s-interpreter",
+                    "kind": "bin"
+                }
+            },
+            "args": ["add.s", "1", "5"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 's-interpreter'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=s-interpreter",
+                    "--package=s-interpreter"
+                ],
+                "filter": {
+                    "name": "s-interpreter",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
